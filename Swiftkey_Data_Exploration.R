@@ -45,6 +45,7 @@ library(reshape2)
 library(ggplot2)
 library(RColorBrewer)
 library(textcat)
+library(dplyr)
 
 # 0.1 LOAD DATA ACCESS FUNCTIONS
 
@@ -80,11 +81,18 @@ files_size <- round(file.info(files_list)$size / Mb)
 
 # 3.3 Number of lines
 files_lines <- sapply(files_list,
-                      function(x) length(readLines(x, warn = FALSE)))
+                      function(x){
+                        con <- file(x, "rb", blocking = FALSE)
+                        length(readLines(con, warn = FALSE))
+                        close(con)}
+                      )
 # 3.4 Test encoding
-files_encoding <- sapply(files_list,
-                         function(x) guess_encoding(x, n_max = 1000))
-files_encoding <- t(files_encoding)
+# files_encoding <- sapply(files_list,
+#                          function(x){
+#                            guess_encoding(x, n_max = 1000)
+#                          })
+# files_encoding <- t(files_encoding)
+# files_encoding
 
 # 3.5 Count words
 files_stats <- sapply(files_list,
@@ -95,8 +103,8 @@ files_words <- data.frame(t(files_stats))$Words
 files_summary_df <- data.frame(row.names = files_name,
                                files_size,
                                files_lines,
-                               files_words,
-                               files_encoding)
+                               files_words  #,files_encoding
+                               )
 files_summary_df <- t(files_summary_df)
 View(files_summary_df)
 
@@ -140,12 +148,10 @@ Tokenizer <- function(x, n_gram = 1){
 } 
 
 get_corpus_freq <- function(my_corpus, n_gram = 1){
-  print("1")
   dtm_matrix <- DocumentTermMatrix(my_corpus,
                 control = list(
                          tokenize = function(x) Tokenizer(x, n_gram))
                 )
-  print("2")
   dtm_matrix <- as.matrix(dtm_matrix)
   frequency <- colSums(dtm_matrix)
   frequency <- sort(frequency, decreasing = TRUE)
@@ -191,8 +197,6 @@ ggplot(freq_df, aes(reorder(names, value), value)) +
   ylab("") 
 
 
-#textcat(head(names(get_corpus_freq(crps)), 10))
-crps
 
 
 head(get_corpus_freq(crps, n_gram = 1), 10)
@@ -218,3 +222,32 @@ ggplot_ngram <- function(my_corpus, n = 1, num = 30){
 ggplot_ngram(crps, n = 1)
 ggplot_ngram(crps, n = 2)
 ggplot_ngram(crps, n = 3)
+ggplot_ngram(crps, n = 4)
+
+
+# 7. Testing language
+
+tex_lang <- data.frame(head(names(get_corpus_freq(crps)), 10))
+names(tex_lang) <- c("word")
+tex_lang$language <- textcat(tex_lang$word)
+
+tex_lang
+
+
+# 8. n-gram coverage
+
+View(head(get_corpus_freq(crps, n_gram = 1), 10))
+
+n_gram1 <- data.frame(get_corpus_freq(crps, n_gram = 1))
+names(n_gram1) <- "number"
+n_gram1$number <- as.integer(n_gram1$number)
+n_gram1$word <- rownames(n_gram1)
+
+n_gram1 <- mutate(n_gram1, cumsum=cumsum(number))
+n_gram1$cumsum <- 100 * n_gram1$cumsum / sum(n_gram1$number)
+
+#View(n_gram1)
+
+plot(n_gram1$cumsum, main = "Uni-gram Coverage",
+     xlab = "number of words" ,
+     ylab = "%")

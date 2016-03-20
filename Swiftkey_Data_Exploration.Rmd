@@ -12,17 +12,25 @@ output: html_document
 This report is a milestone in the _Data Science Specialization Capstone_ from 
 _Coursera_ by *Johns Hopkins University*.
 
-The data is from a corpus called HC Corpora (www.corpora.heliohost.org). See the readme file at [http://www.corpora.heliohost.org/aboutcorpus.html](http://www.corpora.heliohost.org/aboutcorpus.html) for details on the corpora available.
-The data came from a series of text documents in severallanguages from blogs, news and twitter content and came from [Swiftkey](https://swiftkey.com).
-
-The report uses Natural Language Processing (NLP) techniques to explore the
+The data is from a corpus called HC Corpora (www.corpora.heliohost.org). See the readme file at [http://www.corpora.heliohost.org/aboutcorpus.html](http://www.corpora.heliohost.org/aboutcorpus.html) for details on the corpora available. The data came from a series of text documents in severallanguages from blogs, news and twitter content and came from [Swiftkey](https://swiftkey.com).
+This report uses Natural Language Processing (NLP) techniques to explore the
 data sets, the code includes several functions to easily expand the exploration
 to other languages or other data sets. This milestone is intended to be used to
 create a interactive app using [Shiny](http://shiny.rstudio.com/) package.
 
+### 0.1 Key Findings
+ *  Date set is huge and it must be sample and preprocess to be handle by
+ an online app
+ * `textcat` package gives poor results when identifying foreign words.
+ *  More frequent n-grams are found.
+ 
+### 0.2 Plan for creating a prediction algorithm and Shiny app
+ *  The app must be online and the n-grams probabilities must be obtained previously
+ *  Functions for plotting as a wordcloud or barplots can be reused in the app.
+
 ## 1. CLEANING ENVIRONMENT AND LOADING PACKAGES
 
-```{r, message=FALSE, results="hide"}
+```{r, message=FALSE, results="hide", warning=FALSE}
 rm(list = ls(all = TRUE))
 gc(reset = TRUE)
 
@@ -35,24 +43,28 @@ library(reshape2)
 library(ggplot2)
 library(RColorBrewer)
 library(knitr)
+library(textcat)
+library(dplyr)
 ```
 
 #### 1.1 LOADING DATA ACCESS FUNCTIONS
 
-The functions
+The source code for data access functions can be downloaded from [Github](https://github.com/EnriquePH/NLP-Coursera-Swiftkey/blob/master/Swiftkey_Data_Access_Functions.R) and the zip file with the data from:  [Captone Dataset](https://eventing.coursera.org/api/redirectStrict/9KpCMH_V-405R5ye7QECacs1n74c8_6Wtn3bY4frzF-eHgNVNdGFWs-YC2kCjp7GnQBMc5FpaaDT-MdDi6euvg.HmYP-Z0BT27sf6ZmDJFWXg.Ri8SQS8fsGy_GqwTnP1RGv6vvA9wiXpN0iPaaibBR6-VYeju7d0Ie5EVv8GBxILGoCi_5umpWE7fk-HW1NlF5a_z-TsgVXHswn12iOx45S4JK3P8m2kowWg-UYWC8zdEQDQWIrzKcghFm2RoOTKzUFech0EEWcp8ah89YyoAhBXOIGrezG5ILY-9TCASGippjPLAuIu9Efq4vnB2NKJfhiBK3ti44tR_cbbhB_tnLbOg8whnxxDLMhGIehoiYqO05w9W9ro7m9q3wU_7zsBSAjvanPqFKM3EAI1gIJUscXcFvyJ33AKsI9tpPxyjqv74pZ9XlkWL9KGadksduUoGKYG1wIeOuYBN_6w66dv0MpfhrFy10zbFAP9gp4WaK5SxrT4dwSfdEyxGVm6L-jctVH42IPuv0IE5IcS5FSCMNoQ)
 
 ```{r}
 source("Swiftkey_Data_Access_Functions.R")
 ```
+
 
 #### 1.2 PARAMETERS
 
 ```{r}
 AVAILABLE_LANGUAGES
 LANGUAGE <- AVAILABLE_LANGUAGES[1]
-LANGUAGE
 SAMPLE_SIZE <- 1000
 ```
+
+The selected languaje in this report is `r names(LANGUAGE)`
 
 #### 1.3 LIST DATA FILES
 
@@ -61,10 +73,9 @@ files_list <- get_files_path(LANGUAGE)
 names(files_list) <- list.files(get_path(LANGUAGE), pattern = "*.txt")
 ```
 
-
 ### 2. FILES SUMMARY
 
-```{r}
+```{r, warning=FALSE}
 Mb <- 2**20 # One Megabyte
 # Files names
 files_name <- as.vector(names(files_list))
@@ -75,11 +86,6 @@ files_size <- round(file.info(files_list)$size / Mb)
 # Number of lines
 files_lines <- sapply(files_list,
                       function(x) length(readLines(x, warn = FALSE)))
-# Testing encoding
-files_encoding <-
-  sapply(files_list, function(x)
-    guess_encoding(x, n_max = 1000))
-files_encoding <- t(files_encoding)
 
 # Counting words
 files_stats <- sapply(files_list,
@@ -90,8 +96,7 @@ files_words <- data.frame(t(files_stats))$Words
 files_summary_df <- data.frame(row.names = files_name,
                                files_size,
                                files_lines,
-                               files_words,
-                               files_encoding)
+                               files_words)
 files_summary_df <- t(files_summary_df)
 ```
 
@@ -102,7 +107,10 @@ print(files_summary_df)
 
 ### 3. SAMPLE TEXT FILES
 
-```{r}
+The original files are sampled by line to a total of `r SAMPLE_SIZE` lines
+per file.
+
+```{r, message=FALSE, results="hide", warning=FALSE}
 set.seed(pi)
 sapply(get_files_path(LANGUAGE),
        function(x) sample_text_file(x, size = SAMPLE_SIZE)
@@ -119,15 +127,10 @@ crps <- Corpus(DirSource(sample_dir(LANGUAGE), encoding = "UTF-8"),
               readerControl = list(language = LANGUAGE))
 ```
 
-#### 4.1 Check corpus
-
-```{r}
-inspect(crps)
-meta(crps, "id")
-```
-
-
 ### 5. CORPUS TRANSFORMATIONS
+
+The transformations does not include filtering by stopwords because it is nedeed
+a complete set of n-grams. 
 
 ```{r}
 corpus_cleaning <- function(my_corpus){
@@ -145,14 +148,16 @@ crps <- corpus_cleaning(crps)
 ### 6. DISTRIBUTION OF WORD FREQUENCIES
 
 ```{r}
-ngram_Tokenizer <- function(x, n_gram){
+Tokenizer <- function(x, n_gram = 1){
   NGramTokenizer(x, Weka_control(min = n_gram, max = n_gram))
 } 
 
 get_corpus_freq <- function(my_corpus, n_gram = 1){
-  ntoken <- function(x) ngram_Tokenizer(x, n_gram)
-  dtm_matrix <- as.matrix(
-    DocumentTermMatrix(my_corpus, control = list(tokenize = ntoken)))
+  dtm_matrix <- DocumentTermMatrix(my_corpus,
+                control = list(
+                         tokenize = function(x) Tokenizer(x, n_gram))
+                )
+  dtm_matrix <- as.matrix(dtm_matrix)
   frequency <- colSums(dtm_matrix)
   frequency <- sort(frequency, decreasing = TRUE)
   return(frequency)
@@ -165,7 +170,7 @@ get_corpus_words <- function(my_corpus, n_gram = 1){
 
 #### 6.1 Display wordclouds
 
-```{r}
+```{r, warning=FALSE}
 display_wordcloud <-
   function(my_corpus,
            num = 100,
@@ -185,7 +190,7 @@ display_wordcloud(crps[3])  # twitter
 ```
 
 
-#### 6.2 Plot frecuencies by word
+#### 6.2 Plot frequencies by word.
 
 ```{r}
 freq_df <- data.frame(head(get_corpus_freq(crps[1]), 15),
@@ -203,28 +208,27 @@ ggplot(freq_df, aes(reorder(names, value), value)) +
 ```
 
  
-# 7. FULL SAMPLED CORPUS n-grams FRECUENCIES 
+# 7. FULL SAMPLED CORPUS WORDS n-grams FREQUENCIES 
 
+An *n-gram* is a contiguous sequence of n items from a given sequence of text or
+speech.
+The corpus used are a sample from the files: *blogs, news and twitter* to plot the
+words *n-grams*, with n from 1 to 4.
 
 ```{r}
-head(get_corpus_freq(crps, n_gram = 1), 10)
-head(get_corpus_freq(crps, n_gram = 2), 10)
-head(get_corpus_freq(crps, n_gram = 3), 10)
-head(get_corpus_freq(crps, n_gram = 4), 10)
-
-ggplot_ngram <- function(my_corpus, n = 1, num = 30){
+ggplot_ngram <- function(my_corpus, n = 1, num = 15){
   df <- data.frame(head(get_corpus_freq(my_corpus, n_gram = n), num))
   names(df) <- "value"
   df$names <- rownames(df)
   my_color <- brewer.pal(8, "Dark2")[n]
-  ggplot(df, aes(reorder(names, value), value)) +   
+  p <- ggplot(df, aes(reorder(names, value), value)) +   
     geom_bar(stat = "identity", fill = my_color) +
     coord_flip() +
     xlab("") +
     ylab("") +
     theme_minimal()
+  return(p)
 }
-
 
 ```
 
@@ -232,9 +236,52 @@ ggplot_ngram <- function(my_corpus, n = 1, num = 30){
 ggplot_ngram(crps, n = 1)
 ggplot_ngram(crps, n = 2)
 ggplot_ngram(crps, n = 3)
+ggplot_ngram(crps, n = 4)
 ```
 
 
+# 8. UNI-GRAM COVERAGE:
+
+```{r}
+n_gram1 <- data.frame(get_corpus_freq(crps, n_gram = 1))
+names(n_gram1) <- "number"
+n_gram1$number <- as.integer(n_gram1$number)
+n_gram1$word <- rownames(n_gram1)
+
+n_gram1 <- mutate(n_gram1, cumsum=cumsum(number))
+n_gram1$cumsum <- 100 * n_gram1$cumsum / sum(n_gram1$number)
+
+plot(n_gram1$cumsum, main = "Uni-gram Coverage",
+     xlab = "number of words" ,
+     ylab = "%"
+     )
+```
+
+
+# 9. EVALUATING WORDS THAT COME FROM FOREIGN LANGUAGES.
+
+This is a test of `texcat` package to test languages, but unfortunately the
+results are poor. So other methods must be used, for instance filtering for special
+characters or dictionary serching, packages `wordnet` or `qdapDictionaries`
+
+```{r}
+tex_lang <- data.frame(head(names(get_corpus_freq(crps)), 10))
+names(tex_lang) <- c("word")
+tex_lang$language <- textcat(tex_lang$word)
+
+tex_lang
+```
+
 
 ## Links:
-
+ * Github: [NLP-Coursera-Swiftkey](https://github.com/EnriquePH/NLP-Coursera-Swiftkey)
+ * Wikipedia: [n-gram](https://en.wikipedia.org/wiki/N-gram)
+ * Stackoverflow: [Side-by-side plots with ggplot2](http://stackoverflow.com/questions/1249548/side-by-side-plots-with-ggplot2)
+ * [Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
+* Stackoverflow: [tm package for word count](http://stackoverflow.com/questions/26510298/rs-tm-package-for-word-count)
+* Stackoverflow: [Easy way of determining number if lines records](http://www.r-bloggers.com/easy-way-of-determining-number-of-linesrecords-in-a-given-large-file-using-r/)
+* Stackoverflow: [Count the number of words in a string in r ](http://stackoverflow.com/questions/8920145/count-the-number-of-words-in-a-string-in-r)
+* DeltaDna: [Text mining in r](https://deltadna.com/blog/text-mining-in-r-for-term-frequency/)
+* Stackoverflow: [Removing on english text from corpus in r](http://stackoverflow.com/questions/18153504/removing-non-english-text-from-corpus-in-r-using-tm)
+* Stackoverflow: [Filtering non english words from a corpus with textcat](http://stackoverflow.com/questions/18447920/filtering-out-non-english-words-from-a-corpus-using-textcat)
+* [R: add title to wordcloud graphics / png](http://stackoverflow.com/questions/15224913/r-add-title-to-wordcloud-graphics-png)
