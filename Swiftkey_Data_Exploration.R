@@ -82,9 +82,8 @@ files_size <- round(file.info(files_list)$size / Mb)
 files_lines <- sapply(files_list,
                       function(x) length(readLines(x, warn = FALSE)))
 # 3.4 Test encoding
-files_encoding <-
-  sapply(files_list, function(x)
-    guess_encoding(x, n_max = 1000))
+files_encoding <- sapply(files_list,
+                         function(x) guess_encoding(x, n_max = 1000))
 files_encoding <- t(files_encoding)
 
 # 3.5 Count words
@@ -195,9 +194,8 @@ ggplot(freq_df, aes(reorder(names, value), value)) +
 #textcat(head(names(get_corpus_freq(crps)), 10))
 crps
 
-get_corpus_freq(crps, 1)
 
-head(get_corpus_freq(crps, 1), 10)
+head(get_corpus_freq(crps, n_gram = 1), 10)
 head(get_corpus_freq(crps, n_gram = 2), 10)
 head(get_corpus_freq(crps, n_gram = 3), 10)
 head(get_corpus_freq(crps, n_gram = 4), 10)
