@@ -1,0 +1,18 @@
+---
+title: "Resources"
+author: "Enrique Pérez Herrero"
+date: "March 8, 2016"
+output: html_document
+---
+
+## PACKAGES
+
+* [Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
+
+* http://stackoverflow.com/questions/26510298/rs-tm-package-for-word-count
+* http://www.r-bloggers.com/easy-way-of-determining-number-of-linesrecords-in-a-given-large-file-using-r/
+* http://stackoverflow.com/questions/8920145/count-the-number-of-words-in-a-string-in-r
+* https://deltadna.com/blog/text-mining-in-r-for-term-frequency/
+* http://stackoverflow.com/questions/18153504/removing-non-english-text-from-corpus-in-r-using-tm
+* http://stackoverflow.com/questions/18447920/filtering-out-non-english-words-from-a-corpus-using-textcat
+* [R: add title to wordcloud graphics / png](http://stackoverflow.com/questions/15224913/r-add-title-to-wordcloud-graphics-png)

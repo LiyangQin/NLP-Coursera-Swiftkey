@@ -1,0 +1,13 @@
+# R PROJECT .gitignore
+# (c) Kikesoft 2015
+
+# R Code 
+.Rhistory
+.RData
+.Rproj.user/
+.Rproj
+rsconnect/
+data/
+draft/
+
+.Rproj.user

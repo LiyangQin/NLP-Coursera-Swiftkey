@@ -1,0 +1,83 @@
+---
+title: "Quiz 1: Getting Started"
+author: "Enrique Pérez Herrero"
+date: "March 8, 2016"
+output: html_document
+---
+
+```{r}
+library(readr)
+```
+
+
+### 1. The *en_US.blogs.txt* is how many megabytes?
+
+```{r}
+Mb <- 2**20
+file_size_Mb <-  file.info("data/final/en_US/en_US.blogs.txt")$size/Mb
+file_size_Mb <-  round(file_size_Mb)
+print(paste("File en_US.blogs.txt has", file_size_Mb, "Mb"))
+```
+
+### 2. The *en_US.twitter.txt* has how many lines of text?
+
+```{r}
+guess_encoding("data/final/en_US/en_US.twitter.txt", n_max = 1000)
+
+file_2 <- readLines("data/final/en_US/en_US.twitter.txt", encoding = "UTF-8")
+
+million_lines <-  length(file_2)/10**6
+print(paste("File en_US.twitter.txt has around",
+            round(million_lines),
+            "million lines"))
+```
+
+### 3. What is the length of the longest line seen in any of the three en_US
+data sets?
+
+```{r}
+file_1 <- readLines("data/final/en_US/en_US.blogs.txt", encoding = "UTF-8")
+file_2 <- readLines("data/final/en_US/en_US.twitter.txt", encoding = "UTF-8")
+file_3 <- readLines("data/final/en_US/en_US.news.txt", encoding = "UTF-8")
+
+x <- c(max(sapply(file_1, nchar)),
+       max(sapply(file_2, nchar)),
+       max(sapply(file_3, nchar))
+)
+
+names(x) <- (c("en_US.blogs.txt", "en_US.twitter.txt", "en_US.news.txt"))
+barplot(x, col = c("lightblue", "mistyrose", "lightcyan"))
+max(x)
+
+print(paste("Longest line seen in en_US data sets is:", max(x), "characters"))
+```
+
+### 4. In the en_US twitter data set, if you divide the number of lines where  the word "love" (all lowercase) occurs by the number of lines the word "hate" (all lowercase) occurs, about what do you get?
+
+```{r}
+love <- sum(grepl("love", as.vector(file_2)))
+hate <- sum(grepl("hate", as.vector(file_2)))
+love/hate
+```
+
+
+### 5. The one tweet in the en_US twitter data set that matches the word "biostats" says what?
+
+```{r}
+biostats_index <- grep("biostats", as.vector(file_2))
+file_2[biostats_index]
+```
+
+
+### 6. How many tweets have the exact characters "A computer once beat me at chess, but it was no match for me at kickboxing". (I.e. the line matches those characters exactly.)
+
+```{r}
+chess <- "A computer once beat me at chess, but it was no match for me at kickboxing"
+sum(grepl(chess, file_2))
+```
+
+### RESULTS:
+
+Quiz 1: Getting Started
+6/6 questions correct
+Quiz passed!

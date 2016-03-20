@@ -1,0 +1,240 @@
+---
+title: "Swiftkey Data Exploration"
+author: "Enrique Pérez Herrero"
+date: "March 19, 2016"
+email: eph.project1500@gmail.com
+output: html_document
+---
+
+## Coursera Data Science Specialization Capstone: Milestone Report
+
+## 0. EXECUTIVE SUMMARY.
+This report is a milestone in the _Data Science Specialization Capstone_ from 
+_Coursera_ by *Johns Hopkins University*.
+
+The data is from a corpus called HC Corpora (www.corpora.heliohost.org). See the readme file at [http://www.corpora.heliohost.org/aboutcorpus.html](http://www.corpora.heliohost.org/aboutcorpus.html) for details on the corpora available.
+The data came from a series of text documents in severallanguages from blogs, news and twitter content and came from [Swiftkey](https://swiftkey.com).
+
+The report uses Natural Language Processing (NLP) techniques to explore the
+data sets, the code includes several functions to easily expand the exploration
+to other languages or other data sets. This milestone is intended to be used to
+create a interactive app using [Shiny](http://shiny.rstudio.com/) package.
+
+## 1. CLEANING ENVIRONMENT AND LOADING PACKAGES
+
+```{r, message=FALSE, results="hide"}
+rm(list = ls(all = TRUE))
+gc(reset = TRUE)
+
+library(tm)
+library(readr)
+library(wordcloud)
+library(RWeka)
+library(stringi)
+library(reshape2)
+library(ggplot2)
+library(RColorBrewer)
+library(knitr)
+```
+
+#### 1.1 LOADING DATA ACCESS FUNCTIONS
+
+The functions
+
+```{r}
+source("Swiftkey_Data_Access_Functions.R")
+```
+
+#### 1.2 PARAMETERS
+
+```{r}
+AVAILABLE_LANGUAGES
+LANGUAGE <- AVAILABLE_LANGUAGES[1]
+LANGUAGE
+SAMPLE_SIZE <- 1000
+```
+
+#### 1.3 LIST DATA FILES
+
+```{r}
+files_list <- get_files_path(LANGUAGE)
+names(files_list) <- list.files(get_path(LANGUAGE), pattern = "*.txt")
+```
+
+
+### 2. FILES SUMMARY
+
+```{r}
+Mb <- 2**20 # One Megabyte
+# Files names
+files_name <- as.vector(names(files_list))
+
+# Files sizes
+files_size <- round(file.info(files_list)$size / Mb)
+
+# Number of lines
+files_lines <- sapply(files_list,
+                      function(x) length(readLines(x, warn = FALSE)))
+# Testing encoding
+files_encoding <-
+  sapply(files_list, function(x)
+    guess_encoding(x, n_max = 1000))
+files_encoding <- t(files_encoding)
+
+# Counting words
+files_stats <- sapply(files_list,
+               function(x) stri_stats_latex(readLines(x, warn = FALSE)))
+
+# Creating data frame.
+files_words <- data.frame(t(files_stats))$Words
+files_summary_df <- data.frame(row.names = files_name,
+                               files_size,
+                               files_lines,
+                               files_words,
+                               files_encoding)
+files_summary_df <- t(files_summary_df)
+```
+
+```{r}
+print(files_summary_df)
+```
+
+
+### 3. SAMPLE TEXT FILES
+
+```{r}
+set.seed(pi)
+sapply(get_files_path(LANGUAGE),
+       function(x) sample_text_file(x, size = SAMPLE_SIZE)
+       )
+
+# Directory for sample files.
+sample_dir(LANGUAGE)
+```
+
+### 4. CREATE SAMPLE FILES CORPUS
+
+```{r}
+crps <- Corpus(DirSource(sample_dir(LANGUAGE), encoding = "UTF-8"),
+              readerControl = list(language = LANGUAGE))
+```
+
+#### 4.1 Check corpus
+
+```{r}
+inspect(crps)
+meta(crps, "id")
+```
+
+
+### 5. CORPUS TRANSFORMATIONS
+
+```{r}
+corpus_cleaning <- function(my_corpus){
+  my_corpus <- tm_map(my_corpus, stripWhitespace)
+  my_corpus <- tm_map(my_corpus, removePunctuation)
+  my_corpus <- tm_map(my_corpus, content_transformer(tolower))
+  my_corpus <- tm_map(my_corpus, removeNumbers)
+  return(my_corpus)
+}
+
+crps <- corpus_cleaning(crps)
+```
+
+
+### 6. DISTRIBUTION OF WORD FREQUENCIES
+
+```{r}
+ngram_Tokenizer <- function(x, n_gram){
+  NGramTokenizer(x, Weka_control(min = n_gram, max = n_gram))
+} 
+
+get_corpus_freq <- function(my_corpus, n_gram = 1){
+  ntoken <- function(x) ngram_Tokenizer(x, n_gram)
+  dtm_matrix <- as.matrix(
+    DocumentTermMatrix(my_corpus, control = list(tokenize = ntoken)))
+  frequency <- colSums(dtm_matrix)
+  frequency <- sort(frequency, decreasing = TRUE)
+  return(frequency)
+}
+
+get_corpus_words <- function(my_corpus, n_gram = 1){
+  return(names(get_corpus_freq(my_corpus, n_gram)))
+}
+```
+
+#### 6.1 Display wordclouds
+
+```{r}
+display_wordcloud <-
+  function(my_corpus,
+           num = 100,
+           n_gram = 1,
+           palette = brewer.pal(8, "Dark2")) {
+    frequency <- head(get_corpus_freq(my_corpus, n_gram), num)
+    words <- names(frequency)
+    my_title <- meta(my_corpus, "id")
+    wordcloud(words, frequency, colors = palette)
+    text(x = 0.5, y = 1, my_title)
+  }
+
+layout(matrix(c(1, 1, 2, 3), 2, 2, byrow = TRUE))
+display_wordcloud(crps[1])  # blogs
+display_wordcloud(crps[2])  # news
+display_wordcloud(crps[3])  # twitter
+```
+
+
+#### 6.2 Plot frecuencies by word
+
+```{r}
+freq_df <- data.frame(head(get_corpus_freq(crps[1]), 15),
+                      head(get_corpus_freq(crps[2]), 15),
+                      head(get_corpus_freq(crps[3]), 15))
+names(freq_df) <- list.files(sample_dir(LANGUAGE), pattern = "*.txt")
+freq_df$names <- rownames(freq_df)
+freq_df <- melt(freq_df, id.vars = 4)
+
+ggplot(freq_df, aes(reorder(names, value), value)) +   
+  geom_bar(aes(fill = variable), position = "dodge", stat = "identity") +
+  coord_flip() +
+  xlab("") +
+  ylab("")
+```
+
+ 
+# 7. FULL SAMPLED CORPUS n-grams FRECUENCIES 
+
+
+```{r}
+head(get_corpus_freq(crps, n_gram = 1), 10)
+head(get_corpus_freq(crps, n_gram = 2), 10)
+head(get_corpus_freq(crps, n_gram = 3), 10)
+head(get_corpus_freq(crps, n_gram = 4), 10)
+
+ggplot_ngram <- function(my_corpus, n = 1, num = 30){
+  df <- data.frame(head(get_corpus_freq(my_corpus, n_gram = n), num))
+  names(df) <- "value"
+  df$names <- rownames(df)
+  my_color <- brewer.pal(8, "Dark2")[n]
+  ggplot(df, aes(reorder(names, value), value)) +   
+    geom_bar(stat = "identity", fill = my_color) +
+    coord_flip() +
+    xlab("") +
+    ylab("") +
+    theme_minimal()
+}
+
+
+```
+
+```{r}
+ggplot_ngram(crps, n = 1)
+ggplot_ngram(crps, n = 2)
+ggplot_ngram(crps, n = 3)
+```
+
+
+
+## Links:
+
