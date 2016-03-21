@@ -236,8 +236,6 @@ tex_lang
 
 # 8. n-gram coverage
 
-View(head(get_corpus_freq(crps, n_gram = 1), 10))
-
 n_gram1 <- data.frame(get_corpus_freq(crps, n_gram = 1))
 names(n_gram1) <- "number"
 n_gram1$number <- as.integer(n_gram1$number)

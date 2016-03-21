@@ -8,6 +8,8 @@ output: html_document
 ## PACKAGES
 
 * [Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
+* [Getting Started with quanteda](https://cran.rstudio.com/web/packages/quanteda/vignettes/quickstart.html)
+
 
 * http://stackoverflow.com/questions/26510298/rs-tm-package-for-word-count
 * http://www.r-bloggers.com/easy-way-of-determining-number-of-linesrecords-in-a-given-large-file-using-r/

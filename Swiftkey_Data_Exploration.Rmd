@@ -19,7 +19,7 @@ to other languages or other data sets. This milestone is intended to be used to
 create a interactive app using [Shiny](http://shiny.rstudio.com/) package.
 
 ### 0.1 Key Findings
- *  Date set is huge and it must be sample and preprocess to be handle by
+ *  Date set is huge and it must be sampled and preprocess to be handle by
  an online app
  * `textcat` package gives poor results when identifying foreign words.
  *  More frequent n-grams are found.
@@ -27,6 +27,7 @@ create a interactive app using [Shiny](http://shiny.rstudio.com/) package.
 ### 0.2 Plan for creating a prediction algorithm and Shiny app
  *  The app must be online and the n-grams probabilities must be obtained previously
  *  Functions for plotting as a wordcloud or barplots can be reused in the app.
+
 
 ## 1. CLEANING ENVIRONMENT AND LOADING PACKAGES
 
