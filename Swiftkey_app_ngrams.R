@@ -3,7 +3,7 @@
 #  App and prediction algorithm Week 5
 #  File: Swiftkey_app_ngrams.R
 #  (c) 2016 - Enrique Pérez Herrero
-#  GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+#  GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 #  21/Apr/2016
 #  ----------------------------------------------------------------------------
 

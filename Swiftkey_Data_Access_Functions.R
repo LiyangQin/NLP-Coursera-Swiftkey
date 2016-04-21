@@ -3,7 +3,7 @@
 #  Data Exploration Week 2
 #  File: Swiftkey_Data_Access_Functions.R
 #  (c) 2016 - Enrique Pérez Herrero
-#  GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+#  GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 #  9/Apr/2016
 #  ----------------------------------------------------------------------------
 

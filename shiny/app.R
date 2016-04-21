@@ -1,9 +1,9 @@
 #  -----------------------------------------------------------------------------
-#  DATA SCIENCE CAPSTONE
+#  COURSERA JHU - DATA SCIENCE CAPSTONE
 #  Next Word Prediction App
 #  File: app.R
 #  (c) 2016 - Enrique Pérez Herrero
-#  GNU GENERAL PUBLIC LICENSE Version 2, June 1991
+#  GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 #  21/Apr/2016
 #  -----------------------------------------------------------------------------
 
