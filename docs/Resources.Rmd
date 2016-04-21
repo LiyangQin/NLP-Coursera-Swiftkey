@@ -18,3 +18,10 @@ output: html_document
 * http://stackoverflow.com/questions/18153504/removing-non-english-text-from-corpus-in-r-using-tm
 * http://stackoverflow.com/questions/18447920/filtering-out-non-english-words-from-a-corpus-using-textcat
 * [R: add title to wordcloud graphics / png](http://stackoverflow.com/questions/15224913/r-add-title-to-wordcloud-graphics-png)
+* Stanford English Dictionary: [http://web.stanford.edu/class/cs106l/assignments/dictionary.txt](http://web.stanford.edu/class/cs106l/assignments/dictionary.txt)
+* [Large Language Models in Machine Translation](http://www.aclweb.org/anthology/D07-1090.pdf)
+* Boise State University [Corpus Linguistics](http://english.boisestate.edu/?q=Corpus+Linguistics&site=boisestate.edu)
+
+## PRESENTATIONS
+
+* [Authoring R Presentations](https://support.rstudio.com/hc/en-us/articles/200486468-Authoring-R-Presentations)

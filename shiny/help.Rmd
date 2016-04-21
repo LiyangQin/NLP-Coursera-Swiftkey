@@ -1,0 +1,16 @@
+# NEXT WORD PREDICTION
+## Coursera - Data Science Specialization Capstone
+* Author:  Enrique Pérez Herrero  
+* Date: 20/Apr/2016  
+* [Email](mailto:eph.project1500@gmail.com)  
+* [GNU GENERAL PUBLIC LICENSE Version 2, June 1991](https://github.com/EnriquePH/Precious-Metals-Prediction)  
+* [App url](https://kikesoft.shinyapps.io/Precious-Metals-Prediction)  
+* [GitHub url](https://github.com/EnriquePH/Precious-Metals-Prediction)
+* [Slidify url](http://enriqueph.github.io/Precious-Metals-Slidify/)
+
+## Description:
+
+
+
+## Links
+
