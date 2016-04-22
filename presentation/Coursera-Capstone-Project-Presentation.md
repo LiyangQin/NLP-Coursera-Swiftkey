@@ -1,9 +1,10 @@
 Next Word Prediction App
 ========================================================
-author: Enrique Pérez Herrero
+author: Enrique P. Herrero
 date: 22/Apr/2016
-autosize: true
-font-family: 'Helvetica'
+autosize: false
+width: 1440
+height: 900
 
 ### COURSERA - Data Science Specialization Capstone.
 
