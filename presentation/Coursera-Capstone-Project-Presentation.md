@@ -85,23 +85,41 @@ speed. All `n-gram` table with `UNK` in predicted column are deleted.
 
 Predicted word is found using a simplified version of
 [Stupid Backoff algorithm](https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf),
-where probabilities are not calculated but the more frequent `n-gram` of higher
-order found is used for prediction if no `n-gram` is found the prediction function
+where probabilities are not calculated, but the more frequent `n-gram` of higher
+order found, is used for prediction, if no `n-gram` is found prediction function
 returns the most probable unigram: `the`.
 
-The main difference of this approach with the _Stupid Backoff_ smoothing is that,
+***
+
+The difference of this approach with the _Stupid Backoff_ smoothing is that,
 for instance, in the App: if a trigram is found no bigram is used in the
 prediction, but in the _Stupid Backoff_ you can get a bigram as the most probable
-continuation if it has a higher score. The actial _Stupid Backoff_ method
-penalizes lower order `n-grams` with an $\alpha$ weight that is often set to a
-value of 0.4.
+continuation if it has a higher score than a trigram. The actual
+_Stupid Backoff_ method penalizes lower order `n-grams` with an $\alpha$ weight that is often set to a value of 0.4.
 
-The main advantage is that the prediction is done faster this is important in
-a _free online app_ with low computing resources. 
+The main advantage is that the prediction is done faster: this is important in
+a _free online app_ with low computing resources.
 
 
-4. To Do
+
+4. Instructions and improvements
 ========================================================
+
+## How to use the app
+
+* Please, enter  your sentence without the final word to be predicted,
+inside `Text Area` that can be found in the `Prediction` tab.
+Copy and paste is allowed. The entered sentence is parsed and cleaned and the
+predicted word is automatically displayed.
+
+* Press `Add` button to append predicted word to text area an do further
+predictions.
+
+* Press `Clear` to empty the text area.
+
+* For other functionality select `Help` tab.
+
+***
 
 ## App improvements:
 
@@ -113,21 +131,3 @@ that must work with these other corpus.
 * Add slide to change number of `n-grams` displayed in plots
 * Add `n-grams` coverage plots.
 * Use a external data base to expand space available for n-gram tables.
-
-***
-## Links:
-
-### Packages:
-
-* [Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
-* [Getting Started with quanteda](https://cran.rstudio.com/web/packages/quanteda/vignettes/quickstart.html)
-
-### Dictionaries:
-
-* [cracklib-small included in Ubuntu 15.10 distribution](https://github.com/cracklib/cracklib/blob/master/src/dicts/cracklib-small)
-
-### Books, articles and courses:
-
-* [Large Language Models in Machine Translation](http://www.aclweb.org/anthology/D07-1090.pdf)
-* [Speech and Language Processing](https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf). Daniel Jurafsky & James H. Martin.
-* [Coursera Standford NLP](https://class.coursera.org/nlp/lecture)

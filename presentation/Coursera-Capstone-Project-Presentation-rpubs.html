@@ -869,29 +869,53 @@ speed. All <code>n-gram</code> table with <code>UNK</code> in predicted column a
 </section>
 <section data-transition="linear" data-transition-speed="default">
 <h3>3. Algorithm</h3>
-<div class="slideContent" >
+<div class="column column1 slideContent" >
 <p>Predicted word is found using a simplified version of
 <a href="https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf">Stupid Backoff algorithm</a>,
-where probabilities are not calculated but the more frequent <code>n-gram</code> of higher
-order found is used for prediction if no <code>n-gram</code> is found the prediction function
+where probabilities are not calculated, but the more frequent <code>n-gram</code> of higher
+order found, is used for prediction, if no <code>n-gram</code> is found prediction function
 returns the most probable unigram: <code>the</code>.</p>
 
-<p>The main difference of this approach with the <em>Stupid Backoff</em> smoothing is that,
+
+</div>
+
+<div class="column column2 slideContent" >
+
+
+<p>The difference of this approach with the <em>Stupid Backoff</em> smoothing is that,
 for instance, in the App: if a trigram is found no bigram is used in the
 prediction, but in the <em>Stupid Backoff</em> you can get a bigram as the most probable
-continuation if it has a higher score. The actial <em>Stupid Backoff</em> method
-penalizes lower order <code>n-grams</code> with an \( \alpha \) weight that is often set to a
-value of 0.4.</p>
+continuation if it has a higher score than a trigram. The actual
+<em>Stupid Backoff</em> method penalizes lower order <code>n-grams</code> with an \( \alpha \) weight that is often set to a value of 0.4.</p>
 
-<p>The main advantage is that the prediction is done faster this is important in
-a <em>free online app</em> with low computing resources. </p>
+<p>The main advantage is that the prediction is done faster: this is important in
+a <em>free online app</em> with low computing resources.</p>
 
 </div>
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>4. To Do</h3>
+<h3>4. Instructions and improvements</h3>
 <div class="column column1 slideContent" >
+<h2>How to use the app</h2>
+
+<ul>
+<li><p>Please, enter  your sentence without the final word to be predicted,
+inside <code>Text Area</code> that can be found in the <code>Prediction</code> tab.
+Copy and paste is allowed. The entered sentence is parsed and cleaned and the
+predicted word is automatically displayed.</p></li>
+<li><p>Press <code>Add</code> button to append predicted word to text area an do further
+predictions.</p></li>
+<li><p>Press <code>Clear</code> to empty the text area.</p></li>
+<li><p>For other functionality select <code>Help</code> tab.</p></li>
+</ul>
+
+
+</div>
+
+<div class="column column2 slideContent" >
+
+
 <h2>App improvements:</h2>
 
 <ul>
@@ -903,35 +927,6 @@ that must work with these other corpus.</li>
 <li>Add slide to change number of <code>n-grams</code> displayed in plots</li>
 <li>Add <code>n-grams</code> coverage plots.</li>
 <li>Use a external data base to expand space available for n-gram tables.</li>
-</ul>
-
-
-</div>
-
-<div class="column column2 slideContent" >
-
-
-<h2>Links:</h2>
-
-<h3>Packages:</h3>
-
-<ul>
-<li><a href="https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf">Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015</a></li>
-<li><a href="https://cran.rstudio.com/web/packages/quanteda/vignettes/quickstart.html">Getting Started with quanteda</a></li>
-</ul>
-
-<h3>Dictionaries:</h3>
-
-<ul>
-<li><a href="https://github.com/cracklib/cracklib/blob/master/src/dicts/cracklib-small">cracklib-small included in Ubuntu 15.10 distribution</a></li>
-</ul>
-
-<h3>Books, articles and courses:</h3>
-
-<ul>
-<li><a href="http://www.aclweb.org/anthology/D07-1090.pdf">Large Language Models in Machine Translation</a></li>
-<li><a href="https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf">Speech and Language Processing</a>. Daniel Jurafsky &amp; James H. Martin.</li>
-<li><a href="https://class.coursera.org/nlp/lecture">Coursera Standford NLP</a></li>
 </ul>
 
 </div>
