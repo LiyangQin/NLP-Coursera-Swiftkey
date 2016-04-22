@@ -24,7 +24,7 @@ source("Swiftkey_Data_Access_Functions.R")
 
 AVAILABLE_LANGUAGES
 LANGUAGE <- AVAILABLE_LANGUAGES[1]   #english
-SAMPLE_SIZE <- c(1000,  # Number of lines: blogs
+SAMPLE_SIZE <- c(10000,  # Number of lines: blogs
                  10000,  # news
                   0   # twitter
                  )

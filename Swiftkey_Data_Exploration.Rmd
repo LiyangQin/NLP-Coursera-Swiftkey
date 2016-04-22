@@ -12,7 +12,11 @@ output: html_document
 This report is a milestone in the _Data Science Specialization Capstone_ from 
 _Coursera_ by *Johns Hopkins University*.
 
-The data is from a corpus called HC Corpora (www.corpora.heliohost.org). See the readme file at [http://www.corpora.heliohost.org/aboutcorpus.html](http://www.corpora.heliohost.org/aboutcorpus.html) for details on the corpora available. The data came from a series of text documents in severallanguages from blogs, news and twitter content and came from [Swiftkey](https://swiftkey.com).
+The data is from a corpus called HC Corpora (www.corpora.heliohost.org).
+See the readme file at 
+[http://www.corpora.heliohost.org/aboutcorpus.html](http://www.corpora.heliohost.org/aboutcorpus.html)
+for details on the corpora available. The data came from a series of text documents in several languages from blogs, news and twitter content and came from [Swiftkey](https://swiftkey.com).
+
 This report uses Natural Language Processing (NLP) techniques to explore the
 data sets, the code includes several functions to easily expand the exploration
 to other languages or other data sets. This milestone is intended to be used to

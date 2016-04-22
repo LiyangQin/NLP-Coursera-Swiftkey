@@ -2,6 +2,8 @@
 #  DATA SCIENCE CAPSTONE
 #  Data Exploration Week 3
 #  File: Swiftkey_Prediction.R
+#  (c) 2016 - Enrique Pérez Herrero
+#  GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 #  Enrique Pérez Herrero
 #  21/Mar/2016
 #  ----------------------------------------------------------------------------

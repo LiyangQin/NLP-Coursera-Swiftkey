@@ -111,99 +111,33 @@ $(document).ready(function () {
 </div>
 
 
-<div id="next-word-prediction" class="section level1">
-<h1>NEXT WORD PREDICTION</h1>
-<div id="coursera---data-science-specialization-capstone" class="section level2">
-<h2>Coursera - Data Science Specialization Capstone</h2>
+<div id="next-word-prediction-app" class="section level1">
+<h1>Next Word Prediction App</h1>
+<p>author: date: autosize: true</p>
+</div>
+<div id="first-slide" class="section level1">
+<h1>First Slide</h1>
+<p>For more details on authoring R presentations please visit <a href="https://support.rstudio.com/hc/en-us/articles/200486468" class="uri">https://support.rstudio.com/hc/en-us/articles/200486468</a>.</p>
 <ul>
-<li>Author: Enrique Pérez Herrero<br />
-</li>
-<li>Date: 20/Apr/2016<br />
-</li>
-<li><a href="mailto:eph.project1500@gmail.com">Email</a><br />
-</li>
-<li><a href="https://github.com/EnriquePH/NLP-Coursera-Swiftkey/blob/master/LICENSE">GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</a><br />
-</li>
-<li><a href="https://kikesoft.shinyapps.io/Precious-Metals-Prediction">App url</a><br />
-</li>
-<li><a href="https://github.com/EnriquePH/NLP-Coursera-Swiftkey">GitHub url</a></li>
-<li><a href>Presentation url</a></li>
-<li><a href="https://rpubs.com/eph_1500/Swiftkey">Data Exploration</a></li>
+<li>Bullet 1</li>
+<li>Bullet 2</li>
+<li>Bullet 3</li>
 </ul>
 </div>
-<div id="description" class="section level2">
-<h2>Description:</h2>
-<p>This lightweight app predicts last word of an uncompleted English sentence, using precalculated n-gram tables parsed with dictionary <code>cracklib-small</code>, included in <em>Ubuntu 15.10</em> distribution.</p>
-<p>The data is from a corpus called HC Corpora (www.corpora.heliohost.org). See the readme file at <a href="http://www.corpora.heliohost.org/aboutcorpus.html" class="uri">http://www.corpora.heliohost.org/aboutcorpus.html</a> for details on the corpora available.</p>
-<p>The data source belongs to a series of text documents in several languages from <code>blogs</code>, <code>news</code> and <code>twitter</code> content from <a href="https://swiftkey.com">Swiftkey</a>.</p>
-<p>The corpus is sampled as: 10000 lines from <code>blogs</code>, 10000 from <code>news</code> and 0 lines from <code>twitter</code>.</p>
-<p>Predicted word is found using a simplified version of <a href="https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf">Stupid Backoff algorithm</a>, where probabilities are not calculated but the more frequent <code>n-gram</code> of higher order found is used for prediction.</p>
+<div id="slide-with-code" class="section level1">
+<h1>Slide With Code</h1>
+<pre class="r"><code>summary(cars)</code></pre>
+<pre><code>     speed           dist       
+ Min.   : 4.0   Min.   :  2.00  
+ 1st Qu.:12.0   1st Qu.: 26.00  
+ Median :15.0   Median : 36.00  
+ Mean   :15.4   Mean   : 42.98  
+ 3rd Qu.:19.0   3rd Qu.: 56.00  
+ Max.   :25.0   Max.   :120.00  </code></pre>
 </div>
-<div id="prediction" class="section level2">
-<h2>Prediction:</h2>
-<div id="text-area" class="section level3">
-<h3>Text Area:</h3>
-<p>Enter the sentence without the final word to be predicted. <code>Text Area</code> allows copy and paste. Text is not case sensitive.</p>
-</div>
-<div id="clear-button" class="section level3">
-<h3>Clear button:</h3>
-<p>Delete <code>Text Area</code></p>
-</div>
-<div id="add-button" class="section level3">
-<h3>Add button:</h3>
-<p>When <code>Add</code> button is pressed it merges predicted word to <code>Text Area</code> sentence, to do further predictions.</p>
-</div>
-</div>
-<div id="n-grams-tables" class="section level2">
-<h2>N-grams tables:</h2>
-<p>Select from <code>unigrams</code>, <code>bigrams</code>, <code>trigrams</code> and <code>tetragrams</code> to display desired table.</p>
-<p>All N-grams tables but <code>unigrams</code> have three columns: <code>sentence</code>, <code>prediction</code> and <code>frequency</code>.</p>
-</div>
-<div id="word-cloud" class="section level2">
-<h2>Word Cloud:</h2>
-<p>Select from <code>unigrams</code>, <code>bigrams</code>, <code>trigrams</code> and <code>tetragrams</code> to display most frequent n-grams word cloud.</p>
-<p>The calculated n-grams uses the marker <code>UNK</code> for word not found in the dictionary.</p>
-</div>
-<div id="n-grams-plot" class="section level2">
-<h2>N-grams plot</h2>
-<p>Select from <code>unigrams</code>, <code>bigrams</code>, <code>trigrams</code> and <code>tetragrams</code> to display n-grams barplot ordered by frequency.</p>
-</div>
-<div id="help" class="section level2">
-<h2>Help:</h2>
-<p>Shows this page.</p>
-</div>
-<div id="links" class="section level2">
-<h2>Links:</h2>
-<div id="packages" class="section level3">
-<h3>Packages:</h3>
-<ul>
-<li><a href="https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf">Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015</a></li>
-<li><a href="https://cran.rstudio.com/web/packages/quanteda/vignettes/quickstart.html">Getting Started with quanteda</a></li>
-</ul>
-</div>
-<div id="dictionaries" class="section level3">
-<h3>Dictionaries:</h3>
-<ul>
-<li><a href="http://web.stanford.edu/class/cs106l/assignments/dictionary.txt">Stanford English Dictionary</a></li>
-<li><a href="https://github.com/cracklib/cracklib/blob/master/src/dicts/cracklib-small">cracklib-small included in Ubuntu 15.10 distribution</a></li>
-</ul>
-</div>
-<div id="presentations" class="section level3">
-<h3>Presentations:</h3>
-<ul>
-<li><a href="https://support.rstudio.com/hc/en-us/articles/200486468-Authoring-R-Presentations">Authoring R Presentations</a></li>
-</ul>
-</div>
-<div id="books-articles-and-courses" class="section level3">
-<h3>Books, articles and courses:</h3>
-<ul>
-<li><a href="http://www.aclweb.org/anthology/D07-1090.pdf">Large Language Models in Machine Translation</a></li>
-<li>Boise State University <a href="http://english.boisestate.edu/?q=Corpus+Linguistics&amp;site=boisestate.edu">Corpus Linguistics</a></li>
-<li><a href="https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf">Speech and Language Processing</a>. Daniel Jurafsky &amp; James H. Martin.</li>
-<li>Coursera Standford <a href="https://class.coursera.org/nlp/lectur">Natural Language Processing</a> by Dan Jurafsky, Christopher Manning</li>
-</ul>
-</div>
-</div>
+<div id="slide-with-plot" class="section level1">
+<h1>Slide With Plot</h1>
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-2" /></p>
 </div>
 
 

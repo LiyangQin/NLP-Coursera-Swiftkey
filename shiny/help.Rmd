@@ -6,14 +6,87 @@
 * [GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007](https://github.com/EnriquePH/NLP-Coursera-Swiftkey/blob/master/LICENSE)  
 * [App url](https://kikesoft.shinyapps.io/Precious-Metals-Prediction)  
 * [GitHub url](https://github.com/EnriquePH/NLP-Coursera-Swiftkey)
-* [Presentation url](http://enriqueph.github.io/Precious-Metals-Slidify/)
+* [Presentation url]()
+* [Data Exploration](https://rpubs.com/eph_1500/Swiftkey)
 
 ## Description:
 
+This lightweight app predicts last word of an uncompleted English sentence, 
+using precalculated n-gram tables parsed with dictionary `cracklib-small`,
+included in _Ubuntu 15.10_ distribution.
+
+The data is from a corpus called HC Corpora (www.corpora.heliohost.org).
+See the readme file at  [http://www.corpora.heliohost.org/aboutcorpus.html](http://www.corpora.heliohost.org/aboutcorpus.html) for details on the corpora available.
+
+The data source belongs to a series of text documents in several languages from
+`blogs`, `news` and `twitter` content from [Swiftkey](https://swiftkey.com).
+
+The corpus is sampled as:  10000 lines from `blogs`, 10000 from `news` and 0 lines
+from `twitter`.
+
+Predicted word is found using a simplified version of [Stupid Backoff algorithm](https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf),
+where probabilities are not calculated but the more frequent `n-gram` of higher
+order found is used for prediction.
 
 
-## Links
+## Prediction:
 
-### Dictionary:
- * [Stanford English Dictionary](http://web.stanford.edu/class/cs106l/assignments/dictionary.txt)
-* [cracklib-small included in ubuntu 15.10 distribution](https://github.com/cracklib/cracklib/blob/master/src/dicts/cracklib-small)
+### Text Area:
+
+Enter the sentence without the final word to be predicted. `Text Area`
+allows copy and paste. Text is not case sensitive.
+
+### Clear button:
+
+Delete `Text Area`
+
+### Add button:
+
+When `Add` button is pressed it merges predicted word to `Text Area` sentence,
+to do further predictions.  
+
+## N-grams tables:
+
+Select from `unigrams`, `bigrams`, `trigrams` and `tetragrams` to display
+desired table.
+
+All N-grams tables but `unigrams` have three columns:  `sentence`, `prediction`
+and `frequency`.
+
+## Word Cloud:
+
+Select from `unigrams`, `bigrams`, `trigrams` and `tetragrams` to display
+most frequent n-grams word cloud.
+
+The calculated n-grams uses the marker `UNK` for word not found in the
+dictionary.
+
+## N-grams plot
+
+Select from `unigrams`, `bigrams`, `trigrams` and `tetragrams` to display
+n-grams barplot ordered by frequency.
+
+## Help:
+Shows this page.
+
+## Links:
+
+### Packages:
+
+* [Introduction to the tm Package, Text Mining in R, Ingo Feinerer, July 3, 2015](https://cran.r-project.org/web/packages/tm/vignettes/tm.pdf)
+* [Getting Started with quanteda](https://cran.rstudio.com/web/packages/quanteda/vignettes/quickstart.html)
+
+### Dictionaries:
+
+* [Stanford English Dictionary](http://web.stanford.edu/class/cs106l/assignments/dictionary.txt)
+* [cracklib-small included in Ubuntu 15.10 distribution](https://github.com/cracklib/cracklib/blob/master/src/dicts/cracklib-small)
+
+### Presentations:
+* [Authoring R Presentations](https://support.rstudio.com/hc/en-us/articles/200486468-Authoring-R-Presentations)
+
+### Books, articles and courses:
+
+* [Large Language Models in Machine Translation](http://www.aclweb.org/anthology/D07-1090.pdf)
+* Boise State University [Corpus Linguistics](http://english.boisestate.edu/?q=Corpus+Linguistics&site=boisestate.edu)
+* [Speech and Language Processing](https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf). Daniel Jurafsky & James H. Martin.
+* Coursera Standford [Natural Language Processing](https://class.coursera.org/nlp/lectur) by Dan Jurafsky, Christopher Manning

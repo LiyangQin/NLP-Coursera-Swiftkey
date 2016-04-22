@@ -79,7 +79,7 @@ server <- function(input, output, session) {
 # 2. UI ------------------------------------------------------------------------
 
 ui <- fluidPage(
-  theme = shinytheme("united"),
+  theme = shinytheme("cosmo"),
   tags$hr(),
   titlePanel("NEXT WORD PREDICTION"),
   tags$hr(),
